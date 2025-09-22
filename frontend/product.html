@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Details - Pooja Kit Store</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header>
+  <h1>Pooja Kit Store</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="cart.html">Cart</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="admin.html">Admin</a>
+  </nav>
+</header>
+
+<main>
+  <div id="productDetail"></div>
+  <button onclick="goBack()">Back to Products</button>
+</main>
+
+<script>
+const queryParams = new URLSearchParams(window.location.search);
+const productId = queryParams.get('id');
+
+fetch(`https://your-render-backend.onrender.com/api/products/${productId}`)
+.then(res => res.json())
+.then(p => {
+  const div = document.getElementById('productDetail');
+  div.innerHTML = `
+    <h2>${p.name}</h2>
+    <img src="${p.imageUrl}" alt="${p.name}" style="max-width:300px;"><br>
+    <p>${p.description}</p>
+    <p>Price: ₹${p.price}</p>
+    <button onclick="addToCart(${p.id}, '${p.name}', ${p.price})">Add to Cart</button>
+  `;
+});
+
+function addToCart(id, name, price){
+  let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  cart.push({ id, name, price, qty: 1 });
+  localStorage.setItem('cart', JSON.stringify(cart));
+  alert('Added to cart!');
+}
+
+function goBack(){
+  window.location.href='index.html';
+}
+</script>
+</body>
+</html>

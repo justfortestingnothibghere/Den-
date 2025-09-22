@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact - Pooja Kit Store</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header>
+  <h1>Pooja Kit Store</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="cart.html">Cart</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="admin.html">Admin</a>
+  </nav>
+</header>
+
+<main>
+  <h2>Contact Us</h2>
+  <p>Email: support@pooja-kit.in</p>
+  <p>Phone: +91-XXXXXXXXXX</p>
+  <p>Address: Your Warehouse / Office Address, India</p>
+  <h3>Send us a message</h3>
+  <form id="contactForm">
+    <input type="text" id="name" placeholder="Your Name" required><br><br>
+    <input type="email" id="email" placeholder="Your Email" required><br><br>
+    <textarea id="message" placeholder="Your Message" required></textarea><br><br>
+    <button type="submit">Send Message</button>
+  </form>
+</main>
+
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  alert("Thank you for contacting us! We will get back to you shortly.");
+  this.reset();
+});
+</script>
+</body>
+</html>

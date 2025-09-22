@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout - Pooja Kit Store</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header>
+  <h1>Pooja Kit Store</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="cart.html">Cart</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="admin.html">Admin</a>
+  </nav>
+</header>
+
+<main>
+  <h2>Checkout</h2>
+  <div id="checkoutForm">
+    <label>Name:</label><br>
+    <input type="text" id="name" required><br><br>
+    <label>Phone:</label><br>
+    <input type="text" id="phone" required><br><br>
+    <label>Address:</label><br>
+    <textarea id="address" required></textarea><br><br>
+    <button onclick="proceedPayment()">Pay Now</button>
+  </div>
+</main>
+
+<script>
+let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+function proceedPayment(){
+  const name = document.getElementById('name').value;
+  const phone = document.getElementById('phone').value;
+  const address = document.getElementById('address').value;
+
+  if(!name || !phone || !address){ alert("Please fill all fields"); return; }
+
+  const totalPrice = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+
+  fetch('https://your-render-backend.onrender.com/api/orders', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ customerName:name, customerPhone:phone, customerAddress:address, products:cart, totalPrice })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const options = {
+      key: 'YOUR_RAZORPAY_KEY_ID',
+      amount: data.razorpayOrder.amount,
+      currency: 'INR',
+      name: 'Pooja Kit Store',
+      order_id: data.razorpayOrder.id,
+      handler: function(response){
+        alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+        localStorage.removeItem('cart');
+        window.location.href='index.html';
+      }
+    };
+    const rzp = new Razorpay(options);
+    rzp.open();
+  });
+}
+</script>
+</body>
+</html>

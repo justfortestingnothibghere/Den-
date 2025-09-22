@@ -1,6 +1,6 @@
 const express = require('express');
-const authMiddleware = require('./utils/authMiddleware');
-const ProductModel = require('./models/Product');
+const authMiddleware = require('../utils/authMiddleware');
+const ProductModel = require('../models/Product');
 
 module.exports = (sequelize) => {
   const router = express.Router();

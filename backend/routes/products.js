@@ -49,4 +49,10 @@ module.exports = (sequelize) => {
       if (!product) return res.status(404).json({ message: "Product not found" });
       await product.destroy();
       res.json({ message: "Product deleted" });
-    } catch (err)
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+  return router; // <-- Return the router from the module
+}

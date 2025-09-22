@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { Sequelize } = require('sequelize');
+const path = require('path');
 const config = require('./config');
 
 const authRoutes = require('./routes/auth');
@@ -35,9 +36,18 @@ sequelize.sync({ alter: true })
   .then(() => console.log("Models synchronized"))
   .catch(err => console.error(err));
 
-// Routes
+// API Routes
 app.use('/api/auth', authRoutes(sequelize));
 app.use('/api/products', productRoutes(sequelize));
 app.use('/api/orders', orderRoutes(sequelize));
 
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// For all other GET requests, send index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
+// Start server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

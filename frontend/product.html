@@ -26,7 +26,7 @@
 const queryParams = new URLSearchParams(window.location.search);
 const productId = queryParams.get('id');
 
-fetch(`https://your-render-backend.onrender.com/api/products/${productId}`)
+fetch(`https://pooja-kit-hqwc.onrender.com/api/products/${productId}`)
 .then(res => res.json())
 .then(p => {
   const div = document.getElementById('productDetail');
